@@ -1,0 +1,40 @@
+{
+  "name": "tools-hub",
+  "version": "1.0.0",
+  "description": "Comprehensive One-Stop Online Tools Platform with 10+ categories and 50+ tools",
+  "type": "module",
+  "license": "MIT",
+  "author": "nuthujim",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nuthujim/tools-hub.git"
+  },
+  "keywords": ["tools", "pdf-processing", "image-tools", "web-tools", "react", "typescript", "express", "ai-powered"],
+  "scripts": {
+    "dev": "NODE_ENV=development tsx server/index.ts",
+    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "start": "NODE_ENV=production node dist/index.js",
+    "check": "tsc",
+    "db:push": "drizzle-kit push"
+  },
+  "dependencies": {
+    "@google/genai": "^1.8.0",
+    "@hookform/resolvers": "^3.10.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "@radix-ui/react-accordion": "^1.2.4",
+    "@radix-ui/react-dialog": "^1.1.7",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.4.0",
+    "@tanstack/react-query": "^5.60.5",
+    "express": "^4.21.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.5",
+    "tailwindcss": "^3.5.5",
+    "drizzle-orm": "^0.36.4",
+    "pdf-lib": "^1.17.1",
+    "multer": "^1.4.5",
+    "wouter": "^3.3.5"
+  }
+}
