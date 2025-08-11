@@ -1,0 +1,34 @@
+steps:
+  # Build the frontend image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/website-frontend:$SHORT_SHA', '-f', 'frontend/Dockerfile', 'frontend']
+
+  # Push the frontend image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/website-frontend:$SHORT_SHA']
+
+  # Deploy the frontend to Cloud Run
+  - name: 'gcr.io/google-cloud-sdk/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'website-frontend-service', # Replace with your frontend service name
+           '--image', 'gcr.io/$PROJECT_ID/website-frontend:$SHORT_SHA',
+           '--region', 'us-central1', # Replace with your region
+           '--platform', 'managed',
+           '--quiet']
+
+  # Build the backend image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/website-backend:$SHORT_SHA', '-f', 'backend/Dockerfile', 'backend']
+
+  # Push the backend image to Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/website-backend:$SHORT_SHA']
+
+  # Deploy the backend to Cloud Run
+  - name: 'gcr.io/google-cloud-sdk/cloud-sdk'
+    entrypoint: gcloud
+    args: ['run', 'deploy', 'website-backend-service', # Replace with your backend service name
+           '--image', 'gcr.io/$PROJECT_ID/website-backend:$SHORT_SHA',
+           '--region', 'us-central1', # Replace with your region
+           '--platform', 'managed',
+           '--quiet']
