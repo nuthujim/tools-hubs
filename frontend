@@ -1,0 +1,29 @@
+# Stage 1: Build the frontend
+FROM node:18-alpine AS builder
+
+# Set the working directory inside the container
+WORKDIR /app/frontend
+
+# Copy package.json and package-lock.json (or yarn.lock if using yarn)
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the frontend application
+RUN npm run build
+
+# Stage 2: Serve the static assets
+FROM nginx:alpine
+
+# Copy the built static files from the builder stage
+COPY --from=builder /app/frontend/dist /usr/share/nginx/html # Adjust '/dist' if your build output directory is different (e.g., 'build')
+
+# Expose the port Nginx runs on
+EXPOSE 8080
+
+# Command to run Nginx
+CMD ["nginx", "-g", "daemon off;"]
